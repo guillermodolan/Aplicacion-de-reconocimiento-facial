@@ -1,0 +1,33 @@
+# login.kv
+<LoginScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            text: 'Iniciar Sesión'
+            on_press: app.iniciar_sesion()
+        Button:
+            text: 'Crear Cuenta'
+            on_press: app.crear_cuenta()
+
+<HomeScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Bienvenido/a:' + root.welcome_text
+        Button:
+            text: 'Cámara'
+            on_press: app.abrir_camara(root.welcome_text)
+        Button:
+            text: 'Archivo'
+            on_press: app.abrir_archivo()
+
+<RegisterScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        TextInput:
+            id: name_input
+            hint_text: 'Nombre'
+        Button:
+            text: 'Tomar Foto'
+            on_press: app.tomar_foto(name_input.text)
+
