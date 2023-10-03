@@ -1,4 +1,6 @@
 import os
+from os.path import isfile, join
+
 from kivy.app import App
 from kivy.properties import StringProperty
 from kivy.uix.boxlayout import BoxLayout
@@ -12,9 +14,8 @@ import mediapipe as mp
 import time
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.popup import Popup
-from kivy.uix.image import Image
+from kivy.uix.image import Image, AsyncImage
 from kivy.uix.videoplayer import VideoPlayer
-
 
 
 class ArchivoScreen(Screen):
@@ -31,6 +32,35 @@ class ArchivoScreen(Screen):
                 nombre_sin_extension = os.path.splitext(nombre_archivo)[0]
                 return nombre_sin_extension  # Devuelve el nombre sin extensión
 
+    def mostrar_archivos(self):
+        carpeta_fotos_y_videos = "fotos_y_videos/Guillermo.jpg"
+
+        # Obtener una lista de archivos en la carpeta
+        archivos = [f for f in os.listdir(carpeta_fotos_y_videos) if isfile(join(carpeta_fotos_y_videos, f))]
+
+        # Limpiar el contenido anterior del ScrollView
+        self.ids.scroll_view.clear_widgets()
+
+        # Crear un layout para el ScrollView
+        layout = BoxLayout(orientation='vertical', spacing=10)
+
+        # Agregar cada archivo como un botón al layout
+        for archivo in archivos:
+            btn = Button(text=archivo, size_hint_y=None, height=40)
+            btn.bind(on_press=lambda instance, file=archivo: self.mostrar_imagen(file))
+            layout.add_widget(btn)
+
+        # Agregar el layout al ScrollView
+        self.ids.scroll_view.add_widget(layout)
+
+    def mostrar_imagen(self, archivo):
+        ruta_imagen = join("fotos_y_videos/Guillermo.jpg", archivo)
+
+        # Mostrar la imagen en un Popup
+        img = AsyncImage(source=ruta_imagen)
+        popup = Popup(title=archivo, content=img, size_hint=(None, None), size=(400, 400))
+        popup.open()
+
 class LoginScreen(Screen):
     pass
 
@@ -42,6 +72,7 @@ class HomeScreen(Screen):
 # Define la pantalla de registro
 class RegisterScreen(Screen):
     pass
+
 
 class LoginApp(App):
 
@@ -83,7 +114,6 @@ class LoginApp(App):
         register_screen = RegisterScreen(name='register')
 
         archivo_screen = ArchivoScreen(name='archivo')
-
 
         self.sm.add_widget(login_screen)
         self.sm.add_widget(home_screen)

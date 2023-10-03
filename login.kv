@@ -34,8 +34,13 @@
 <ArchivoScreen>:
     BoxLayout:
         orientation: 'vertical'
+        ScrollView:
+            id: scroll_view
+            size_hint_y: None
+            height: root.height - 50
         Label:
             text: 'Esta es la pantalla de archivo'
         Button:
             id: btn_archivo
             text: root.get_button_text()
+            on_press: root.mostrar_archivos()
