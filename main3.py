@@ -50,18 +50,37 @@ class ArchivoScreen(Screen):
         # Agregar cada archivo como un botón al layout
         for archivo in archivos:
             btn = Button(text=archivo, size_hint_y=None, height=40)
-            btn.bind(on_press=lambda instance, file=archivo: self.mostrar_imagen(file))
+            if any(ext in archivo.lower() for ext in ('.png', '.jpg', '.jpeg', '.gif')):
+                # Si es una imagen, mostrar la imagen
+                btn.bind(on_press=lambda instance, file=archivo: self.mostrar_imagen(file))
+            elif any(ext in archivo.lower() for ext in ('.mp4', '.avi', '.mov', '.mkv')):
+                # Si es un video, mostrar el video
+                btn.bind(on_press=lambda instance, file=archivo: self.mostrar_video(file))
             layout.add_widget(btn)
 
         # Agregar el layout al ScrollView
         self.ids.scroll_view.add_widget(layout)
 
     def mostrar_imagen(self, archivo):
-        ruta_imagen = join("fotos_y_videos/Guillermo.jpg", archivo)
+        # Capturo el nombre de la persona logueada
+        nombre = self.get_button_text()
+
+        ruta_imagen = join(f"fotos_y_videos/{nombre}.jpg", archivo)
 
         # Mostrar la imagen en un Popup
         img = AsyncImage(source=ruta_imagen)
         popup = Popup(title=archivo, content=img, size_hint=(None, None), size=(400, 400))
+        popup.open()
+
+    def mostrar_video(self, archivo):
+        # Capturo el nombre de la persona logueada
+        nombre = self.get_button_text()
+
+        ruta_video = join(f"fotos_y_videos/{nombre}.jpg", archivo)
+
+        # Mostrar el video en un Popup
+        video = VideoPlayer(source=ruta_video, state='play')
+        popup = Popup(title=archivo, content=video, size_hint=(None, None), size=(400, 400))
         popup.open()
 
 class LoginScreen(Screen):
