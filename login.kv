@@ -42,5 +42,5 @@
             text: 'Esta es la pantalla de archivo'
         Button:
             id: btn_archivo
-            text: root.get_button_text()
+            text: root.get_button_text() if root.get_button_text() is not None else 'Vacío'
             on_press: root.mostrar_archivos()

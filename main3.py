@@ -25,7 +25,11 @@ class ArchivoScreen(Screen):
 
     # Ejemplo: 'Guillermo.jpg', extrae solo el nombre Guillermo
     def get_button_text(self):
+        # Verificar si la carpeta 'fotos' ya existe
         carpeta_fotos = "fotos"
+        if not os.path.exists(carpeta_fotos):
+            # Si no existe, crear la carpeta
+            os.makedirs(carpeta_fotos)
 
         # Con esto capturamos el nombre de la foto, de la persona que se haya logueado.
         # Ejemplo: 'Guillermo.jpg', extraemos solo el nombre "Guillermo"
@@ -36,30 +40,40 @@ class ArchivoScreen(Screen):
 
     # Método que sirve para mostrar las imágenes.
     def mostrar_archivos(self):
-        carpeta_fotos_y_videos = "fotos_y_videos/Guillermo.jpg"
+        nombre = self.get_button_text()
+        carpeta_fotos_y_videos = f"fotos_y_videos/{nombre}.jpg"
 
-        # Obtener una lista de archivos en la carpeta
-        archivos = [f for f in os.listdir(carpeta_fotos_y_videos) if isfile(join(carpeta_fotos_y_videos, f))]
+        # Verificar si la carpeta 'carpeta_fotos_y_videos' existe
+        if not os.path.exists(carpeta_fotos_y_videos):
+            print('No existe la carpeta')
+        else:
+            # Obtener una lista de archivos en la carpeta
+            archivos = [f for f in os.listdir(carpeta_fotos_y_videos) if isfile(join(carpeta_fotos_y_videos, f))]
 
-        # Limpiar el contenido anterior del ScrollView
-        self.ids.scroll_view.clear_widgets()
+            # Limpiar el contenido anterior del ScrollView
+            self.ids.scroll_view.clear_widgets()
 
-        # Crear un layout para el ScrollView
-        layout = BoxLayout(orientation='vertical', spacing=10)
+            # Crear un layout para el ScrollView
+            layout = BoxLayout(orientation='vertical', spacing=10)
 
-        # Agregar cada archivo como un botón al layout
-        for archivo in archivos:
-            btn = Button(text=archivo, size_hint_y=None, height=40)
-            if any(ext in archivo.lower() for ext in ('.png', '.jpg', '.jpeg', '.gif')):
-                # Si es una imagen, mostrar la imagen
-                btn.bind(on_press=lambda instance, file=archivo: self.mostrar_imagen(file))
-            elif any(ext in archivo.lower() for ext in ('.mp4', '.avi', '.mov', '.mkv')):
-                # Si es un video, mostrar el video
-                btn.bind(on_press=lambda instance, file=archivo: self.mostrar_video(file))
-            layout.add_widget(btn)
+            # Verificar si hay archivos en la carpeta
+            if archivos:
+                # Agregar cada archivo como un botón al layout
+                for archivo in archivos:
+                    btn = Button(text=archivo, size_hint_y=None, height=40)
+                    if any(ext in archivo.lower() for ext in ('.png', '.jpg', '.jpeg', '.gif')):
+                        # Si es una imagen, mostrar la imagen
+                        btn.bind(on_press=lambda instance, file=archivo: self.mostrar_imagen(file))
+                    elif any(ext in archivo.lower() for ext in ('.mp4', '.avi', '.mov', '.mkv')):
+                        # Si es un video, mostrar el video
+                        btn.bind(on_press=lambda instance, file=archivo: self.mostrar_video(file))
+                    layout.add_widget(btn)
+            else:
+                # Si no hay archivos, mostrar un mensaje
+                layout.add_widget(Label(text="No hay archivos en la carpeta."))
 
-        # Agregar el layout al ScrollView
-        self.ids.scroll_view.add_widget(layout)
+            # Agregar el layout al ScrollView
+            self.ids.scroll_view.add_widget(layout)
 
     def mostrar_imagen(self, archivo):
         # Capturo el nombre de la persona logueada
@@ -285,6 +299,10 @@ class LoginApp(App):
         cv2.destroyAllWindows()
 
     def abrir_archivo(self):
+        # Obtener el resultado del método get_button_text()
+        texto_boton = self.sm.get_screen('archivo').get_button_text()
+        # Asignar el resultado al texto del botón
+        self.sm.get_screen('archivo').ids.btn_archivo.text = texto_boton if texto_boton is not None else 'Vacío'
         # Cambiar a la pantalla de archivo
         self.sm.current = 'archivo'
 
