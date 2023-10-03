@@ -17,6 +17,9 @@ from kivy.uix.videoplayer import VideoPlayer
 
 
 
+class ArchivoScreen(Screen):
+    pass
+
 class LoginScreen(Screen):
     pass
 
@@ -68,10 +71,13 @@ class LoginApp(App):
         # Pantalla de registro
         register_screen = RegisterScreen(name='register')
 
+        archivo_screen = ArchivoScreen(name='archivo')
+
 
         self.sm.add_widget(login_screen)
         self.sm.add_widget(home_screen)
         self.sm.add_widget(register_screen)
+        self.sm.add_widget(archivo_screen)
 
         return self.sm
 
@@ -216,8 +222,8 @@ class LoginApp(App):
         cv2.destroyAllWindows()
 
     def abrir_archivo(self):
-        # Agregar lógica para abrir la funcionalidad de archivo
-        pass
+        # Cambiar a la pantalla de archivo
+        self.sm.current = 'archivo'
 
     # Agrega una función para tomar la foto y guardarla con el nombre
     def tomar_foto(self, instance):
