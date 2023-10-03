@@ -18,7 +18,18 @@ from kivy.uix.videoplayer import VideoPlayer
 
 
 class ArchivoScreen(Screen):
-    pass
+
+    # Método para capturar el nombre de la foto, de la persona que se haya logueado.
+    # Ejemplo: 'Guillermo.jpg', extrae solo el nombre Guillermo
+    def get_button_text(self):
+        carpeta_fotos = "fotos"
+
+        # Con esto capturamos el nombre de la foto, de la persona que se haya logueado.
+        # Ejemplo: 'Guillermo.jpg', extraemos solo el nombre "Guillermo"
+        for nombre_archivo in os.listdir(carpeta_fotos):
+            if nombre_archivo.endswith(".jpg"):
+                nombre_sin_extension = os.path.splitext(nombre_archivo)[0]
+                return nombre_sin_extension  # Devuelve el nombre sin extensión
 
 class LoginScreen(Screen):
     pass
