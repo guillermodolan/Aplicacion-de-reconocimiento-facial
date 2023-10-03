@@ -20,7 +20,9 @@ from kivy.uix.videoplayer import VideoPlayer
 
 class ArchivoScreen(Screen):
 
-    # Método para capturar el nombre de la foto, de la persona que se haya logueado.
+    # Método para capturar el nombre de la foto, de la persona que se haya logueado. Esto se
+    # asignará al botón almacenado en la pantalla de 'archivo'
+
     # Ejemplo: 'Guillermo.jpg', extrae solo el nombre Guillermo
     def get_button_text(self):
         carpeta_fotos = "fotos"
@@ -32,6 +34,7 @@ class ArchivoScreen(Screen):
                 nombre_sin_extension = os.path.splitext(nombre_archivo)[0]
                 return nombre_sin_extension  # Devuelve el nombre sin extensión
 
+    # Método que sirve para mostrar las imágenes.
     def mostrar_archivos(self):
         carpeta_fotos_y_videos = "fotos_y_videos/Guillermo.jpg"
 
