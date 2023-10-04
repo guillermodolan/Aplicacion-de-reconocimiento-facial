@@ -219,6 +219,8 @@ class LoginApp(App):
         cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
         posicion_izquierda = (50, 50)
+        posicion_derecha = (50, 100)  # Nueva posición para el texto de "Grabando"
+
         fuente = cv2.FONT_HERSHEY_SIMPLEX
         escala_fuente = 1
         color = (255, 255, 255)
@@ -271,6 +273,8 @@ class LoginApp(App):
                                 start_time = None
 
                         elif handedness.classification[0].label == "Right":
+                            # Mostrar "Grabando" cuando se detecta la mano derecha
+                            cv2.putText(frame, "Grabando", posicion_derecha, fuente, escala_fuente, color, 2)
                             if not grabando:
                                 # Iniciar la grabación del video
                                 filename = os.path.join(output_directory, f"video_{int(time.time())}.avi")
