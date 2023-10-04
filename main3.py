@@ -158,6 +158,19 @@ class LoginApp(App):
 
         return self.sm
 
+    def obtener_nombre(self):
+        # Verificar si la carpeta 'fotos' ya existe
+        carpeta_fotos = "fotos"
+        if not os.path.exists(carpeta_fotos):
+            # Si no existe, crear la carpeta
+            os.makedirs(carpeta_fotos)
+
+        # Con esto capturamos el nombre de la foto, de la persona que se haya logueado.
+        # Ejemplo: 'Guillermo.jpg', extraemos solo el nombre "Guillermo"
+        for nombre_archivo in os.listdir(carpeta_fotos):
+            if nombre_archivo.endswith(".jpg"):
+                nombre_sin_extension = os.path.splitext(nombre_archivo)[0]
+                return nombre_sin_extension  # Devuelve el nombre sin extensión
     def iniciar_sesion(self):
 
         # Inicializar la cámara frontal
@@ -194,7 +207,7 @@ class LoginApp(App):
             if foto_coincidente:
                 # Si hay una coincidencia, puedes guardar el nombre de la foto coincidente
                 print("Foto coincidente:", foto_coincidente)
-                self.sm.get_screen('home').welcome_text = foto_coincidente
+                self.sm.get_screen('home').welcome_text = self.obtener_nombre()
                 # Cambia a la pantalla de inicio después de iniciar sesión
                 self.sm.current = 'home'
             else:
