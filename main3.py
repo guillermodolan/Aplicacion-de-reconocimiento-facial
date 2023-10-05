@@ -41,7 +41,7 @@ class ArchivoScreen(Screen):
     # Método que sirve para mostrar las imágenes.
     def mostrar_archivos(self):
         nombre = self.get_button_text()
-        carpeta_fotos_y_videos = f"fotos_y_videos/{nombre}.jpg"
+        carpeta_fotos_y_videos = f"fotos_y_videos/{nombre}"
 
         # Verificar si la carpeta 'carpeta_fotos_y_videos' existe
         if not os.path.exists(carpeta_fotos_y_videos):
@@ -89,13 +89,25 @@ class ArchivoScreen(Screen):
     def mostrar_video(self, archivo):
         # Capturo el nombre de la persona logueada
         nombre = self.get_button_text()
+        ruta_video = join(f"fotos_y_videos/{nombre}", archivo)
+        ruta_modificada = ruta_video.replace('\\', '/')
+        try:
+            captura = cv2.VideoCapture(ruta_modificada)
+            while True:
+                ret, imagen = captura.read()
+                if ret:
+                    cv2.imshow('video', imagen)
+                else:
+                    # El video ha llegado al final
+                    break
+                if cv2.waitKey(30) == 27:  # Presionar la tecla 'Esc' para salir
+                    break
+        except Exception as e:
+            print(f"Ocurrió un error: {str(e)}")
+        finally:
+            captura.release()
+            cv2.destroyAllWindows()
 
-        ruta_video = join(f"fotos_y_videos/{nombre}.jpg", archivo)
-
-        # Mostrar el video en un Popup
-        video = VideoPlayer(source=ruta_video, state='play')
-        popup = Popup(title=archivo, content=video, size_hint=(None, None), size=(400, 400))
-        popup.open()
 
 class LoginScreen(Screen):
     pass
