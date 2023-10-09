@@ -1,3 +1,4 @@
+# login.kv
 <LoginScreen>:
     BoxLayout:
         orientation: 'vertical'
@@ -12,16 +13,13 @@
     BoxLayout:
         orientation: 'vertical'
         Label:
-            text: 'Bienvenido/a:' + root.welcome_text
+            text: 'Bienvenido:' + root.welcome_text
         Button:
             text: 'Cámara'
             on_press: app.abrir_camara(root.welcome_text)
         Button:
             text: 'Archivo'
-            on_press: app.listar_archivos(root.welcome_text)
-        Button:
-            text: 'cerrar sesion'
-            on_release: root.manager.current = 'login'
+            on_press: app.abrir_archivo()
 
 <RegisterScreen>:
     BoxLayout:
@@ -32,26 +30,35 @@
         Button:
             text: 'Tomar Foto'
             on_press: app.tomar_foto(name_input.text)
-<FileScreen>:
+
+<ArchivoScreen>:
     BoxLayout:
         orientation: 'vertical'
-        RecycleView:
-            id: rv
-            viewclass: 'BotonYArchivo'
-            RecycleBoxLayout:
-                default_size: None, dp(56)
-                default_size_hint: 1, None
-                size_hint_y: None
-                height: self.minimum_height
-                orientation: 'vertical'
+        ScrollView:
+            id: scroll_view
+            size_hint_y: None
+            height: root.height - 50
+        Label:
+            text: 'Esta es la pantalla de archivo'
         Button:
-            text: 'Volver'
-            on_release: root.manager.current = 'home'
+            id: btn_archivo
+            text: root.get_button_text() if root.get_button_text() is not None else 'Vacío'
+            on_press: root.mostrar_archivos()
 
-<BotonYArchivo>:
-    orientation: 'horizontal'
-    Label:
-        text: root.archivo
-    Button:
-        text: 'Abrir'
-        on_release: app.abrir_fotos(root.archivo)
+<TextoHomeScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: root.texto
+        Button:
+            text: 'OK'
+            on_press: root.manager.current = 'home'
+
+<TextoLoginScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: root.texto
+        Button:
+            text: 'OK'
+            on_press: root.manager.current = 'login'
