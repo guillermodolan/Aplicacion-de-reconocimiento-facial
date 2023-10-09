@@ -44,3 +44,21 @@
             id: btn_archivo
             text: root.get_button_text() if root.get_button_text() is not None else 'Vacío'
             on_press: root.mostrar_archivos()
+
+<TextoHomeScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: root.texto
+        Button:
+            text: 'OK'
+            on_press: root.manager.current = 'home'
+
+<TextoLoginScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: root.texto
+        Button:
+            text: 'OK'
+            on_press: root.manager.current = 'login'

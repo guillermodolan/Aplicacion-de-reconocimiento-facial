@@ -41,7 +41,7 @@ class ArchivoScreen(Screen):
     # Método que sirve para mostrar las imágenes.
     def mostrar_archivos(self):
         nombre = self.get_button_text()
-        carpeta_fotos_y_videos = f"fotos_y_videos/{nombre}"
+        carpeta_fotos_y_videos = f"fotos_y_videos/{nombre}.jpg"
 
         # Verificar si la carpeta 'carpeta_fotos_y_videos' existe
         if not os.path.exists(carpeta_fotos_y_videos):
@@ -122,6 +122,14 @@ class RegisterScreen(Screen):
     pass
 
 
+class TextoHomeScreen(Screen):
+    texto = StringProperty('')
+
+
+class TextoLoginScreen(Screen):
+    texto = StringProperty('')
+
+
 class LoginApp(App):
 
     def build(self):
@@ -163,10 +171,17 @@ class LoginApp(App):
 
         archivo_screen = ArchivoScreen(name='archivo')
 
+        texto_home_screen = TextoHomeScreen(name='text_home')
+
+        texto_login_screen = TextoLoginScreen(name='text_login')
+
         self.sm.add_widget(login_screen)
         self.sm.add_widget(home_screen)
         self.sm.add_widget(register_screen)
         self.sm.add_widget(archivo_screen)
+        self.sm.add_widget(texto_home_screen)
+        self.sm.add_widget(texto_login_screen)
+        self.sm.current = 'login'
 
         return self.sm
 
@@ -183,6 +198,7 @@ class LoginApp(App):
             if nombre_archivo.endswith(".jpg"):
                 nombre_sin_extension = os.path.splitext(nombre_archivo)[0]
                 return nombre_sin_extension  # Devuelve el nombre sin extensión
+
     def iniciar_sesion(self):
 
         # Inicializar la cámara frontal
@@ -212,18 +228,19 @@ class LoginApp(App):
                 result = DeepFace.verify(ruta_foto, frame, model_name="Facenet", distance_metric='euclidean_l2')
 
                 if result["verified"]:
-                    print(f"La cara en la imagen capturada coincide con la foto {nombre_foto}.")
                     foto_coincidente = nombre_foto
                     break  # Detener la búsqueda cuando se encuentra una coincidencia
 
             if foto_coincidente:
                 # Si hay una coincidencia, puedes guardar el nombre de la foto coincidente
-                print("Foto coincidente:", foto_coincidente)
-                self.sm.get_screen('home').welcome_text = self.obtener_nombre()
+                self.sm.get_screen('home').welcome_text = foto_coincidente
                 # Cambia a la pantalla de inicio después de iniciar sesión
-                self.sm.current = 'home'
+                self.sm.get_screen('text_home').texto = f"La cara en la imagen capturada coincide con la foto {foto_coincidente}."
+                self.sm.current = 'text_home'
             else:
-                print("La cara en la imagen capturada no coincide con ninguna foto en la carpeta 'foto'.")
+                self.sm.get_screen('text_login').texto = ("La cara en la imagen capturada no coincide con ninguna foto "
+                                                          "en la carpeta 'foto'.")
+                self.sm.current = 'text_login'
 
         except Exception as e:
             print("Error:", str(e))
@@ -363,7 +380,8 @@ class LoginApp(App):
                     self.sm.current = 'login'
                     break
         else:
-            print("Ingresa un nombre válido antes de tomar la foto.")
+            self.sm.get_screen('text_login').texto = "Ingresa un nombre válido antes de tomar la foto."
+            self.sm.current = 'text_login'
 
 
 if __name__ == '__main__':
