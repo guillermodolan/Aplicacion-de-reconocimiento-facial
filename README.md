@@ -1,6 +1,6 @@
 # Face Recognition App
 
-Esta es una aplicación desarrollada como parte de un proyecto para la asignatura "Soporte a la Gestión de Datos con programación Visual" en la Universidad Tecnológica Nacional, Facultad Regional Rosario. La aplicación utiliza Python y la biblioteca Kivy para crear una interfaz gráfica interactiva que permite a los usuarios realizar acciones basadas en gestos de manos.
+Esta es una aplicación desarrollada como parte de un proyecto para la asignatura "Soporte a la Gestión de Datos con programación Visual" en la Universidad Tecnológica Nacional, Facultad Regional Rosario. Desarrollada desde Septiembre hasta Octubre del 2023, la aplicación utiliza Python y la biblioteca Kivy para crear una interfaz gráfica interactiva que permite a los usuarios realizar acciones basadas en gestos de manos.
 
 ## Características principales
 
@@ -10,12 +10,13 @@ Esta es una aplicación desarrollada como parte de un proyecto para la asignatur
 
 - **Galería de archivos**: Los usuarios pueden ver un listado de fotos y videos previamente capturados y reproducirlos.
 
+Las tecnologías utilizadas en dicha aplicación son:  
+**Back-End**: Python
+**Front-End**: Kivy (Python Framework)
+
 ## Requisitos
 
-Asegúrate de tener instalados los siguientes requisitos previos:
-
-- Python 
-- Kivy
-- DeepFace
-- MediaPipe
-- EasyGUI
+Previa a la ejecución de esta aplicación, es necesario tener instalados los siguientes requisitos previos:
+- La biblioteca de Pyhton "DeepFace".
+- El framework "MediaPipe".
+- El módulo de Python "EasyGUI".
